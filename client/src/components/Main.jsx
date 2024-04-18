@@ -22,7 +22,7 @@ function Main({ updateRecipeData }) {
       setSuggestions([]);
       setInputValue('')
       setLoading(true);
-      const response = await fetch(`http://localhost:3000/api/v1/search?name=${inputValue}`);
+      const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/search?name=${inputValue}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -39,7 +39,7 @@ function Main({ updateRecipeData }) {
   const fetchSuggestions = async (input) => {
     try {
       console.log('api callled');
-      const response = await fetch(`http://localhost:3000/api/v1/suggest?name=${input}`);
+      const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/suggest?name=${input}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -51,7 +51,7 @@ function Main({ updateRecipeData }) {
     }
   };
   
-  const debouncedFetchSuggestions = debounce(fetchSuggestions, 500); // Adjust debounce delay as needed
+  const debouncedFetchSuggestions = debounce(fetchSuggestions, 500); 
   
   const handleInputChange = (event) => {
     const input = event.target.value;
@@ -83,7 +83,7 @@ function Main({ updateRecipeData }) {
   const handleRandom = async ()=>{
     try{
       setRandomLoading(true)
-      const response = await fetch('http://localhost:3000/api/v1/random');
+      const response = await fetch('https://indian-food-9wno.onrender.com/api/v1/random');
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -96,7 +96,7 @@ function Main({ updateRecipeData }) {
     }
   }
 
-  const placeholders = ["Biryani", "Chilli Garlic Noodles", "Palakura Pappu", "Tandoori chicken", "Dal Handi", "Chicken Handi", "Paneer"];
+  const placeholders = ["Biryani", "Noodles", "Palakura", "Tandoori", "Dal Handi", "Mutton", "Paneer"];
   useEffect(() => {
     const interval = setInterval(() => {
       setPlaceholderIndex(prevIndex => (prevIndex + 1) % placeholders.length);

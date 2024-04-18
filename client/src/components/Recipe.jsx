@@ -25,7 +25,7 @@ function Recipe({ recipeData }) {
   }, [recipeData]);
   async function getImage(imgUrl){
     try {
-      const response = await fetch(`http://localhost:3000/api/v1/image?url=${encodeURIComponent(imgUrl)}`);
+      const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/image?url=${encodeURIComponent(imgUrl)}`);
       if (!response.ok) {
         throw new Error('Failed to fetch Image Url');
       }
