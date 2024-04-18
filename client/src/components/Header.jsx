@@ -13,7 +13,7 @@ function Header({ updateRecipeData }) {
 
         try {
             setBLoading(true);
-          const response = await fetch(`http://localhost:3000/biryani?srno=573,631,881,1793,3703,4959`);
+          const response = await fetch(`http://localhost:3000/api/v1/biryani?srno=573,631,881,1793,3703,4959`);
           if (!response.ok) {
             throw new Error('Failed to fetch data');
           }
@@ -29,7 +29,7 @@ function Header({ updateRecipeData }) {
 
         try {
             setVLoading(true);
-          const response = await fetch(`http://localhost:3000/veg?srno=273,715,1863,2563,1594,6060,3018`);
+          const response = await fetch(`http://localhost:3000/api/v1/veg?srno=273,715,1863,2563,1594,6060,3018`);
           if (!response.ok) {
             throw new Error('Failed to fetch data');
           }

@@ -22,7 +22,7 @@ function Main({ updateRecipeData }) {
       setSuggestions([]);
       setInputValue('')
       setLoading(true);
-      const response = await fetch(`http://localhost:3000/search?name=${inputValue}`);
+      const response = await fetch(`http://localhost:3000/api/v1/search?name=${inputValue}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
@@ -36,31 +36,43 @@ function Main({ updateRecipeData }) {
       setLoading(false); 
     }
   };
-
   const fetchSuggestions = async (input) => {
     try {
-      const response = await fetch(`http://localhost:3000/search?name=${input}`);
+      console.log('api callled');
+      const response = await fetch(`http://localhost:3000/api/v1/suggest?name=${input}`);
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
       const responseData = await response.json();
       const dishNames = responseData.map(meal => meal.recipename);
-        setSuggestions(dishNames);
-
+      setSuggestions(dishNames);
     } catch (error) {
       console.error('Error fetching meal data:', error);
     }
   };
-
+  
+  const debouncedFetchSuggestions = debounce(fetchSuggestions, 500); // Adjust debounce delay as needed
+  
   const handleInputChange = (event) => {
-    const value = event.target.value;
-    if(value.length>0){
+    const input = event.target.value;
+    debouncedFetchSuggestions(input);
+    if(input.length>0){
       setPlaceholderAnimation(false)
-
     }
-    setInputValue(value);
-    fetchSuggestions(value);
+    setInputValue(input);
   };
+  
+  // Debounce function
+  function debounce(func, delay) {
+    let timerId;
+    return function (...args) {
+      clearTimeout(timerId);
+      timerId = setTimeout(() => {
+        func.apply(this, args);
+      }, delay);
+    };
+  }
+  
 
   const handleSuggestionClick = (suggestion) => {
     setInputValue(suggestion);
@@ -71,7 +83,7 @@ function Main({ updateRecipeData }) {
   const handleRandom = async ()=>{
     try{
       setRandomLoading(true)
-      const response = await fetch('http://localhost:3000/random');
+      const response = await fetch('http://localhost:3000/api/v1/random');
       if (!response.ok) {
         throw new Error('Failed to fetch data');
       }
