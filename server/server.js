@@ -12,13 +12,13 @@ const {Pool} = pg;
 app.use(bodyParser.json());
 app.use(cors());
 
-const pool = new pg.Pool({
-  connectionString: process.env.POSTGRES_URL,
-});
+// const pool = new pg.Pool({
+//   connectionString: process.env.POSTGRES_URL,
+// });
 
-// const pool = new Pool({
-//   connectionString: "postgres://default:tZ1NPMmXhl2e@ep-tight-unit-a4bx5ubo-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require",
-// })
+const pool = new Pool({
+  connectionString: "postgres://default:tZ1NPMmXhl2e@ep-tight-unit-a4bx5ubo-pooler.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require",
+})
 
 app.get("/api/v1/search", async (req, res) => {
   const input = req.query.name;
