@@ -1,6 +1,16 @@
 import React ,{useState , useEffect} from 'react'
 import { IoSend } from "react-icons/io5";
 
+function debounce(func, delay) {
+  let timerId;
+  return function (...args) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
 
 function Main({ updateRecipeData }) {
   const [placeholderIndex, setPlaceholderIndex] = useState(0);
@@ -20,7 +30,6 @@ function Main({ updateRecipeData }) {
     try {
       setErrors({});
       setSuggestions([]);
-      setInputValue('')
       setLoading(true);
       const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/search?name=${inputValue}`);
       if (!response.ok) {
@@ -28,6 +37,7 @@ function Main({ updateRecipeData }) {
       }
       const responseData = await response.json();
       updateRecipeData(responseData);
+      setInputValue('')
       // console.log(responseData);
     // console.log(response);
     } catch (error) {
@@ -36,42 +46,30 @@ function Main({ updateRecipeData }) {
       setLoading(false); 
     }
   };
-  const fetchSuggestions = async (input) => {
-    try {
-      console.log('api callled');
-      const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/suggest?name=${input}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch data');
-      }
-      const responseData = await response.json();
-      const dishNames = responseData.map(meal => meal.recipename);
-      setSuggestions(dishNames);
-    } catch (error) {
-      console.error('Error fetching meal data:', error);
-    }
-  };
+  // const debouncedFetchSuggestions = debounce(async (input) => {
+  //   try {
+  //     console.log('api called');
+  //     const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/suggest?name=${input}`);
+  //     if (!response.ok) {
+  //       throw new Error('Failed to fetch data');
+  //     }
+  //     const responseData = await response.json();
+  //     const dishNames = responseData.map((meal) => meal.recipename);
+  //     setSuggestions(dishNames);
+  //   } catch (error) {
+  //     console.error('Error fetching meal data:', error);
+  //   }
+  // }, 500);
   
-  const debouncedFetchSuggestions = debounce(fetchSuggestions, 500); 
   
-  const handleInputChange = (event) => {
-    const input = event.target.value;
-    debouncedFetchSuggestions(input);
-    if(input.length>0){
-      setPlaceholderAnimation(false)
-    }
-    setInputValue(input);
-  };
-  
-  // Debounce function
-  function debounce(func, delay) {
-    let timerId;
-    return function (...args) {
-      clearTimeout(timerId);
-      timerId = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    };
-  }
+  // const handleInputChange = (event) => {
+  //   const input = event.target.value;
+  //   debouncedFetchSuggestions(input);
+  //   if(input.length>0){
+  //     setPlaceholderAnimation(false)
+  //   }
+  //   setInputValue(input);
+  // };
   
 
   const handleSuggestionClick = (suggestion) => {
@@ -95,6 +93,26 @@ function Main({ updateRecipeData }) {
       setRandomLoading(false)
     }
   }
+  useEffect(()=>{
+const fetchSuggestions = setTimeout(async ()=>{
+  if(inputValue != ''){
+  try {
+    setPlaceholderAnimation(false)
+    console.log('api called');
+    const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/suggest?name=${inputValue}`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    const responseData = await response.json();
+    const dishNames = responseData.map((meal) => meal.recipename);
+    setSuggestions(dishNames);
+  } catch (error) {
+    console.error('Error fetching meal data:', error);
+  }
+}
+
+},2000)
+  } , [inputValue])
 
   const placeholders = ["Biryani", "Noodles", "Palakura", "Tandoori", "Dal Handi", "Mutton", "Paneer"];
   useEffect(() => {
@@ -118,7 +136,7 @@ function Main({ updateRecipeData }) {
             placeholder="Enter dish name eg."
             className="glass-input"
             value={inputValue}
-            onChange={handleInputChange}
+            onChange={(e)=>{setInputValue(e.target.value)}}
           />
           {placeholderAnimation && <span className="placeholder-animation">{placeholders[placeholderIndex]}</span>}
           {suggestions.length > 0 && (
