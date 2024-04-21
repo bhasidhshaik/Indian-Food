@@ -23,7 +23,7 @@ const pool = new Pool({
 app.get("/api/v1/search", async (req, res) => {
   const input = req.query.name;
   try {
-    const result = await pool.query("SELECT * FROM recipe WHERE recipename ILIKE $1", ["%" + input + "%"]);
+    const result = await pool.query("SELECT * FROM recipe WHERE recipename ILIKE $1 LIMIT 10", ["%" + input + "%"]);
     res.send(result.rows);
   } catch (error) {
     console.error('Error executing query:', error);
