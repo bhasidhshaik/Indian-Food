@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Itim&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
 :root{
     --primary-color-blue: #42047e;
     --primary-color-green: #07f49e;
@@ -8,6 +9,9 @@ button{
   background:none;
   border: none;
   outline: none;
+}
+.amli{
+  color: var(--primary-color-green);
 }
 /* .skeleton-loader {
   border-radius: 1rem;
@@ -160,6 +164,10 @@ button{
   font-size: 1.3rem;
   letter-spacing: 3px;
   font-family: "Itim", cursive;
+}
+.home-txt h2 span{
+  font-family: "Poetsen One", sans-serif;
+  font-weight: 400;
 }
 .home-txt h2:first-child{
   margin-bottom: 1rem;

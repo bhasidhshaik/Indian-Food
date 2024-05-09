@@ -1,5 +1,8 @@
 import React ,{useState , useEffect} from 'react'
 import { IoSend } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa6";
+
+
 
 function debounce(func, delay) {
   let timerId;
@@ -20,6 +23,20 @@ function Main({ updateRecipeData }) {
   const [loading, setLoading] = useState(false);
   const [randomLoading, setRandomLoading] = useState(false);
   const [placeholderAnimation , setPlaceholderAnimation] = useState(true)
+
+  useEffect(() => {
+    async function fetchFirstData() {
+      try {
+        const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/search?name=biryani`);
+        console.log("First API Called");
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchFirstData(); // Call the async function immediately
+  }, []);
+  
+    
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -98,7 +115,6 @@ const fetchSuggestions = setTimeout(async ()=>{
   if(inputValue != ''){
   try {
     setPlaceholderAnimation(false)
-    console.log('api called');
     const response = await fetch(`https://indian-food-9wno.onrender.com/api/v1/suggest?name=${inputValue}`);
     if (!response.ok) {
       throw new Error('Failed to fetch data');
@@ -125,7 +141,7 @@ const fetchSuggestions = setTimeout(async ()=>{
   return (
     <main className="main" onClick={()=>{setSuggestions([]);}}>
       <div className="home-txt">
-        <h2>Simplifying Mom's Tasks..</h2>
+        <h2>Dear <span className='amli'>Amliii<FaRegHeart /> </span> Every Flavor Celebrated With Love, Just for You!</h2>
         <h2>Discover Recipes Instantly by Entering Any Dish Name...</h2>
         <p>Tip : Search <i> 'Andhra'</i> to get Andhra's Famous Recipes.</p>
       </div>
