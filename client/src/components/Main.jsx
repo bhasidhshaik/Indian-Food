@@ -141,7 +141,7 @@ const fetchSuggestions = setTimeout(async ()=>{
   return (
     <main className="main" onClick={()=>{setSuggestions([]);}}>
       <div className="home-txt">
-        <h2>Dear <span className='amli'>Amliii<FaRegHeart /> </span> Every Flavor Celebrated With Love, Just for You!</h2>
+        {/* <h2>Dear <span className='amli'>Amliii<FaRegHeart /> </span> Every Flavor Celebrated With Love, Just for You!</h2> */}
         <h2>Discover Recipes Instantly by Entering Any Dish Name...</h2>
         <p>Tip : Search <i> 'Andhra'</i> to get Andhra's Famous Recipes.</p>
       </div>
